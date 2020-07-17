@@ -1,11 +1,11 @@
 # Site settings
 author: Virgil Cantu
-title: 
+title: Virgil's Blog
 header-img: img/home-bg.png
 email: cantu.sampsom@gmail.com
 copyright_name: Virgil Cantu
 description: > # this means to ignore newlines until "baseurl:"
-  
+  Odyssey through software engineering. 
 baseurl: "" # the subpath of your site, e.g. /blog
 twitter_username: 
 github_username:  VirgilCantu
