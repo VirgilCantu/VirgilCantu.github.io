@@ -1,7 +1,7 @@
 ---
 layout: post
 title:      "An Unconventional Path"
-date:       2020-07-21 07:41:05 +0000
+date:       2020-07-21 03:41:06 -0400
 permalink:  an_unconventional_path
 ---
 
