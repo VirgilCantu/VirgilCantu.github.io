@@ -1,7 +1,7 @@
 ---
 layout: post
 title:      "StudioB - Rails Project"
-date:       2020-10-28 09:10:38 +0000
+date:       2020-10-28 05:10:38 -0400
 permalink:  studiob_-_rails_project
 ---
 
@@ -23,7 +23,7 @@ class User < ApplicationRecord
   has_many :studio_sessions, through: :user_sessions
   has_many :studios, through: :studio_sessions
 	
-	end
+end
 ```
 
 There was hesitation that was bubbling underneath the surface of my brain. I had never dealt with this many models and their corresponding relationships at once, and doing so seemed intimidating. I didn't want to jinx the remainder of the project by wiring these models incorrectly. Taking notes on each route and its intended purpose while making an ERD  with Lucidchart helped foster an understanding I needed to progress. The most significant discovery that stemmed from this exercise was understanding how a "has many through" relationship would function within these models' boundaries. Specifically, the model User would have many Studios through StudioSessions. Given this model, a User has many StudioSessions. I also wanted to reflect on an entire recording session, which is that StudioSessions have many Users. The session's entirety does not belong to just one User; there are usually artists, producers, session musicians, and studio managers all in the same room. I then created a many to many relationship (User - StudioSession) within a larger many to many relationship (User - Studio). All of this became more manageable when I reiterated one fundamental point: all these macros and relationships are only adding methods. That realization was vital to not feeling overwhelmed by the number of models.
@@ -40,7 +40,7 @@ def create
         session[:user_id] = user.id
 
         redirect_to user_path(user)
-    end
+end
 ```
 
 Proving similarly difficult after a foray into sessions was nested routes. Drawing the routes in config/routes.rb was easy enough. But controlling these routes' flow was another beast, mainly since I had a more restricted user experience. For example, I wanted the User to add studios that, when created, could only be managed by their respective "studio manager."  This studio manager would then add studio sessions belonging to studios they managed and belonging to the Users participating in each session—all great in theory. However, the mess came when trying to find the best strategy to prevent a user from trying to fiddle with the URL directly and edit someone else's studio or sessions. The solution I implemented used a couple of handy before_action filters for different circumstances:
@@ -48,25 +48,25 @@ Proving similarly difficult after a foray into sessions was nested routes. Drawi
 ```
 def require_login
         redirect_to root_path unless session.include? :user_id
-    end
+end
 
-    def require_manager
+def require_manager
         redirect_to root_path unless current_user.roles.include?(Role.find(4))
-    end
+end
 
-    def require_current_user
+def require_current_user
         redirect_to root_path unless current_user.id == params[:id]
-    end
+end
 
-    def require_managed_studio
+def require_managed_studio
         redirect_to root_path unless current_user.id == @studio.studio_manager_id
-    end
+end
 
-    def studio_managed_by_user
+def studio_managed_by_user
         if params[:studio_id]
             redirect_to root_path unless Studio.find_by(id: params[:studio_id]).studio_manager_id == current_user.id
         end
-    end
+end
 ```
 
 Overall, this project, more so than the previous two, has been incredibly challenging. However, I am thankful for the gaps in my knowledge that arose during the project's life cycle, allowing me to shed light and reinforce some weak links in the chain while programming something related to a field I love. As a total newcomer, programming has been possibly the most compelling topic I have ever studied. I am thrilled to discover all of the opportunities where music and programming overlap. JavaScript is on the horizon.
